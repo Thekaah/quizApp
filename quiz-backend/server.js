@@ -17,7 +17,6 @@ app.get('/api/questions', (req, res) => {
   res.json(questions);
 });
 
-// Adicione a rota para criação de feedback
 app.post('/api/feedback', async (req, res) => {
   try {
     const { score } = req.body;

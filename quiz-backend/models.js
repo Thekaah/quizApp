@@ -8,6 +8,5 @@ const Feedback = sequelize.define('Feedback', {
   },
 });
 
-// Remova a chamada `sequelize.sync();` daqui
 
 module.exports = Feedback;
