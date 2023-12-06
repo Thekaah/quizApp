@@ -8,5 +8,18 @@ const Feedback = sequelize.define('Feedback', {
   },
 });
 
+const User = sequelize.define('User', {
+  username: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+});
 
-module.exports = Feedback;
+Feedback.belongsTo(User); // Adiciona uma relação entre Feedback e User
+
+module.exports = { Feedback, User };

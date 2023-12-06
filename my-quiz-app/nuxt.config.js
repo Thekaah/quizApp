@@ -33,13 +33,84 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    '@nuxt/http', // Adicione esta linha
-  ],
+    '@nuxt/http', 
 
+  ],
+  auth: {
+    strategies: {
+      local: {
+        token: {
+          property: 'token',
+        },
+        user: {
+          property: false,
+        },
+        endpoints: {
+          login: { url: '/api/auth/login', method: 'post' },
+          logout: { url: '/api/auth/logout', method: 'post' },
+          user: { url: '/api/auth/user', method: 'get' },
+        },
+      },
+    },
+  },
   http: {
-    baseURL: 'http://localhost:3001', // Substitua pela URL do seu servidor Node.js
+    baseURL: 'http://localhost:3001', // Substitua pela URL do seu servidor de autenticação
   },
 
-  // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    dir: 'dist',
+    quiet: false,
+    optimizeCSS: true,
+    minimize: true,
+    extractCSS: true,
+    splitChunks: {
+      layouts: true,
+      pages: true,
+      commons: true,
+    },
+  },
+  mode: 'universal',
+
+  server: {
+    host: '0.0.0.0', 
+    port: process.env.PORT || 3000,
+  },
+
+
+  router: {
+    middleware: ['auth'], 
+  
+    extendRoutes(routes, resolve) {
+      routes.push(
+        {
+          name: 'login',
+          path: '/login',
+          component: resolve(__dirname, 'pages/login.vue'),
+        },
+        {
+          name: 'register',
+          path: '/register',
+          component: resolve(__dirname, 'pages/register.vue'),
+        },
+        {
+          name: 'quiz',
+          path: '/quiz',
+          component: resolve(__dirname, 'pages/quiz.vue'),
+          meta: { requiresAuth: true } 
+        },
+        {
+          name: 'feedbacks',
+          path: '/feedbacks',
+          component: resolve(__dirname, 'pages/feedbacks.vue'), 
+        },
+        {
+          name: 'my-feedbacks',
+          path: '/my-feedbacks',
+          component: resolve(__dirname, 'pages/MyFeedbacks.vue'),
+        },
+      );
+    },
+  },
+  
+  
 };
